@@ -1,0 +1,105 @@
+First Contribution/ Setup:
+
+
+
+___________________________________________________
+1. Clone the repository (only once)
+
+
+
+	git clone <url copied form clone or download button>
+
+
+
+
+
+2. Create a branch
+
+
+
+	cd <repo directory>
+
+ 
+
+
+
+	git checkout -b <add-your-new-branch-name>
+
+
+
+
+
+3. Make necessary changes and commit those changes
+
+ 
+
+
+
+- make changes in the files
+ 
+ 
+
+
+
+	git add <file> or 	//adds specific files changed
+ 
+
+	git add .		//adds all files changed
+
+ 
+
+
+
+	git commit -m "(my commit will)<enter message here."
+
+
+
+
+4. Push changes to GitHub
+
+ 
+
+
+
+	git push origin <add-you-branch-name>
+
+
+
+
+
+5. Sumbit your changes for review (pull request ~< 250 lines of code)
+
+ 
+
+
+
+- go to the GitHub Repository and you'll see a Compare & Pull request
+ 
+ 
+
+
+- click on that button
+
+ 
+
+
+
+- description: WHAT changed, WHY your pull request exists, HOW it does what it set out to do
+
+ 
+
+
+
+- maybe @mention individuals that you want involved
+
+___________________________________________________
+
+Usual Next Steps:
+
+6. Delete the feature branch that you made, if you successfully merged it into the master/dev
+
+7. Pull changes from repository into your local workspace
+
+	git pull
+
+8. Repeat steps 2 - 8 
