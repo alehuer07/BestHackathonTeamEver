@@ -10,8 +10,22 @@
     <link rel="stylesheet" href="bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 
-
     <title>Music Ride</title>
+
+    <script>
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+        var music = getUrlVars()["m"];
+        if(!music){
+            window.location.href = "routes/music.html";
+        }
+    </script>
   </head>
   <body>
    
