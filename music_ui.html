@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles.css"> 
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    
+    <title>Welcome!</title>
+
+
+    <script type="text/javascript">
+        var music = [];
+       
+      
+        function func(type){
+          console.log(music.indexOf(type));
+          if(music.indexOf(type) == -1){
+            music.push(type);
+            $("#"+type).css("background-color","lightgrey");  
+            $("#"+type+"Button").html("Remove");        
+          }else{
+            music.splice(music.indexOf(type), 1);
+            $("#"+type).css("background-color","white");
+            $("#"+type+"Button").html("Select");   
+          }
+          console.log(music);
+        }
+      </script>
+
+
+  </head>
+  <body>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h3 class="display-9">Choose Your Favorite Genres</h3>
+          <button class="btn btn-lg btn-success" style="float:right" onclick="window.location.href='../index.html?m='+music"> <h3> Next <i class="far fa-arrow-alt-circle-right"></i></h3></button>
+          <p class="lead">Ride with people who like the same music as you.</p>        
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row justify-content-sm-center">
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="blues">
+                    <h5 class="card-title">Blues</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success boot-hover"onclick=func("blues") id="bluesButton">Select</a>
+                  </div>
+                </div>
+            </div>
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="classical">
+                    <h5 class="card-title">Classical</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("classical") id="classicalButton">Select</a>
+                  </div>
+                </div>
+            </div>
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="folk">
+                    <h5 class="card-title">Folk,World; & Country</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success"onclick=func("folk") id="folkButton">Select</a>
+                  </div>
+                </div>
+            </div>
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="funk">
+                    <h5 class="card-title">Funk / Soul</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("funk") id="funkButton">Select</a>
+                  </div>
+                </div>
+            </div>                       
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="hip">
+                    <h5 class="card-title">Hip-Hop</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("hip") id="hipButton">Select</a>
+                  </div>
+                </div>
+            </div>
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="jazz">
+                    <h5 class="card-title">Jazz</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("jazz") id="jazzButton">Select</a>
+                  </div>
+                </div>
+            </div> 
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="latin">
+                    <h5 class="card-title">Latin</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("latin") id="latinButton">Select</a>
+                  </div>
+                </div>
+            </div>
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="pop">
+                    <h5 class="card-title">Pop</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("pop") id="popButton">Select</a>
+                  </div>
+                </div>
+            </div>
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="reggae">
+                    <h5 class="card-title">Reggae</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("reggae") id="reggaeButton">Select</a>
+                  </div>
+                </div>
+            </div>                      
+            <div class="column-sm">
+              <div class="card text-center" style="width: 18rem;">
+                  <div class="card-body" id="rock">
+                    <h5 class="card-title">Rock</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-outline-success" onclick=func("rock") id="rockButton">Select</a>
+                  </div>
+                </div>
+            </div>                        
+        
+      </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="../bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
