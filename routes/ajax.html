@@ -18,10 +18,13 @@
 
     <script type="text/javascript">
 
+      var userID = "";
+
       function checkin(){
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
+            userID = this.responseText.UserID;
             console.log(this.responseText);
           }
         };
@@ -29,6 +32,40 @@
         xhttp.send();      
       }
       checkin();
+
+
+      function list(start, end){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+          }
+        };
+        xhttp.open("GET", "http://localhost:18080/list?riderID="+userID+"&start="+start+"&end="+end, true);
+        xhttp.send();      
+      }
+
+      function delist(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+          }
+        };
+        xhttp.open("GET", "http://localhost:18080/delist?riderID="+userID, true);
+        xhttp.send();   
+      }
+
+      function checkMatch(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+          }
+        };
+        xhttp.open("GET", "http://localhost:18080/check?riderID="+userID, true);
+        xhttp.send();   
+      }
 
     </script>
 

@@ -1,11 +1,10 @@
 console.log("Initiating Server.js...");
+
 const USER = require('./user.js');
 const RIDEDB = require('./RideDB.js');
 
 const app = require('express')();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
-
 
 const serverUpTime = new Date(Date.now());
 const port = 18080;
@@ -15,44 +14,33 @@ http.listen(port, function(){
 });
 
 // Add headers
-app.use(function (req, res, next) {
+//app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost');
+    //res.setHeader('Access-Control-Allow-Origin', 'http://localhost');
 
     // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    //res.setHeader('Access-Control-Allow-Credentials', true);
 
     // Pass to next layer of middleware
-    next();
-});
+    //next();
+//});
 
 ////////////////////////////
 //    Webservice Code     //
 ////////////////////////////
 
-//Answering with Index.html
-/*
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/html/index.html');
-});
-app.get('/client.js', function(req, res){
-    res.sendFile(__dirname + '/html/client.js');
-});
-*/
-
 //API
 app.get('/api/uptime', function(req, res){
     let info = {};
     info.serverUpTime = serverUpTime;
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
     res.send(info);
 });
 
@@ -61,14 +49,10 @@ app.get('/status', function(req, res){
     res.send(info);
 });
 
-app.get('/checkin', function(req, res){g
+app.get('/checkin', function(req, res){
     let info = {};
     info.UserID = USER.HELPERS.GenerateID();
-    res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(info);
+    send(res, info);
 });
 
 app.get('/list', function(req, res){
@@ -83,7 +67,7 @@ app.get('/list', function(req, res){
     RIDEDB.DB.ListRide(ride);
 
     info.status = "ok";
-    res.send(info);
+    send(res, info);
 });
 
 app.get('/delist', function(req, res){
@@ -93,7 +77,7 @@ app.get('/delist', function(req, res){
     RIDEDB.DB.DeListRide(req.query.riderID);
 
     info.status = "ok";
-    res.send(info);
+    send(res, info);
 });
 
 app.get('/check', function(req, res){
@@ -107,14 +91,16 @@ app.get('/check', function(req, res){
     if(!match){
         info.status = "ok";
         info.eta = "unknown";
-        res.send(info);
+
+        send(res, info);
         return;
     } else {
         info.status = "ok";
         info.match = match;
-        info.points = [RIDEDB.DB.queue[match].start,RIDEDB.DB.queue[riderID].start,RIDEDB.DB.queue[riderID].end,RIDEDB.DB.queue[match].end];
+        info.points = [RIDEDB.DB.queue[match].start[2],RIDEDB.DB.queue[riderID].start[2],RIDEDB.DB.queue[riderID].end[2],RIDEDB.DB.queue[match].end][2];
         info.matchMusic = RIDEDB.DB.queue[match].matchMusic;
-        res.send(info);
+
+        send(res, info);
         return;
     }
 
@@ -139,10 +125,22 @@ function stringify(json) {
     return response;
 }
 
+function send(res, info){
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5500');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(info);
+    return;
+}
 function error(res, msg){
     let info = {};
     info.status = "error";
     info.error = msg;
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5500');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(info);
     return;
 }
