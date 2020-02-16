@@ -59,7 +59,7 @@ RideDB.match = function(id){
     let matchMusic = "";
 
     for (const p of potential) {
-        let score = (10 - p.distance) + p.music;
+        let score = (100 - p.distance) + p.music;
         if(score > max_score){
             max_scoreID = p.id;
             matchMusic = p.mlist;
