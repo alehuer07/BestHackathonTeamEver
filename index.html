@@ -254,11 +254,13 @@
 				console.log(M.Cities[0].Pos);
 				console.log(M.Cities[1].Pos);
 				initCities2();
-				console.log(M.Cities)
+				console.log(M.Cities);
 				
 				setTimeout(function(){
-					list(M.Cities[0].Pos.lat+"/"+M.Cities[0].Pos.lng+"/"+M.Cities[0].City,
-                        M.Cities[1].Pos.lat+"/"+M.Cities[1].Pos.lng+"/"+M.Cities[1].City)
+					list(M.Cities[0].Pos.lat+"/"+M.Cities[0].Pos.lng,
+                        M.Cities[0].City,
+                        M.Cities[1].Pos.lat+"/"+M.Cities[1].Pos.lng,
+                        M.Cities[1].City );
 				}, 500);
 			}
 
@@ -346,7 +348,7 @@
 	  
 
 	  
-			function list(start, end){
+			function list(start, startText, end, endText){
 			  var xhttp = new XMLHttpRequest();
 			  xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
@@ -360,7 +362,7 @@
                     $("#routeButton").addClass("btn-danger");
 				}
 			  };
-			  xhttp.open("GET", "http://localhost:18080/list?riderID="+userID+"&start="+start+"&end="+end+"&music="+music, true);
+			  xhttp.open("GET", "http://localhost:18080/list?riderID="+userID+"&start="+start+"&startText="+startText+"&end="+end+"&endText="+endText+"&music="+music, true);
 			  xhttp.send();      
 			}
 	  
@@ -374,7 +376,7 @@
                     $("#earchstatus").html("");
                     $("#routeButton").html("Search Ride");
                     $("#routeButton").removeClass("btn-danger");
-                    $("#routeButton").addClass("btn-primary");                    
+                    $("#routeButton").addClass("btn-primary");
 				}
 			  };
 			  xhttp.open("GET", "http://localhost:18080/delist?riderID="+userID, true);
