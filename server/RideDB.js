@@ -12,12 +12,14 @@ RideDB.DeListRide = function(id){
     console.log(RideDB.queue);
 };
 
-RideDB.newRide = function(id, start, end, music){
+RideDB.newRide = function(id, start, startText, end, endText, music){
     let ride = {};
 
     ride.riderID = id;
     ride.start = start.split("/");
+    ride.startText = startText;
     ride.end = end.split("/");
+    ride.endText = endText;
     ride.music = music;
     ride.match = false;
 

@@ -60,10 +60,12 @@ app.get('/list', function(req, res){
 
     if(!req.query.riderID) { error(res, "riderID is missing"); return; }
     if(!req.query.start){ error(res, "start is missing"); return; }
+    if(!req.query.startText){ error(res, "startText is missing"); return; }
     if(!req.query.end){ error(res, "end is missing"); return; }
+    if(!req.query.endText){ error(res, "endText is missing"); return; }
     if(!req.query.music){ error(res, "music is missing"); return; }
 
-    let ride = RIDEDB.DB.newRide(req.query.riderID, req.query.start, req.query.end, req.query.music);
+    let ride = RIDEDB.DB.newRide(req.query.riderID, req.query.start, req.query.startText, req.query.end, req.query.endText, req.query.music);
     RIDEDB.DB.ListRide(ride);
 
     info.status = "ok";
@@ -97,7 +99,8 @@ app.get('/check', function(req, res){
     } else {
         info.status = "ok";
         info.match = match;
-        info.points = [RIDEDB.DB.queue[match].start[2],RIDEDB.DB.queue[riderID].start[2],RIDEDB.DB.queue[riderID].end[2],RIDEDB.DB.queue[match].end][2];
+        info.points = [RIDEDB.DB.queue[match].start,RIDEDB.DB.queue[riderID].start,RIDEDB.DB.queue[riderID].end,RIDEDB.DB.queue[match].end];
+        info.points = [RIDEDB.DB.queue[match].startText,RIDEDB.DB.queue[riderID].startText,RIDEDB.DB.queue[riderID].endText,RIDEDB.DB.queue[match].endText];
         info.matchMusic = RIDEDB.DB.queue[match].matchMusic;
 
         send(res, info);
