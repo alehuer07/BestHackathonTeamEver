@@ -8,7 +8,7 @@ const io = require('socket.io')(http);
 
 
 const serverUpTime = new Date(Date.now());
-const port = 8080;
+const port = 18080;
 
 http.listen(port, function(){
     console.log('WebServer is listening on *:'+port);
