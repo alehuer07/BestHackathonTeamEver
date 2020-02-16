@@ -54,7 +54,8 @@
         <p class="lead">Ride with people who like the same music as you!</p>
         <hr class="my-4">
         <p>Use our map to match with music lovers going to the same place as you</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        <p>Create a Spotify account first if you do not have one</p>
+        <a class="btn btn-primary btn-lg" href="https://www.spotify.com/us/" role="button">Go to Spotify</a>
       </div>
 
     <!-- Optional JavaScript -->
@@ -97,14 +98,17 @@
    <div id="sidebar">
       <div class="gradient-line"></div>
       <div class="header">
-         <h1>HERE Isoline Routing</h1>
+         <h1>Fill out information</h1>
          <p>
-            Determine a city's reachability index using HERE's location services.
-            <a target="_blank" href="https://developer.here.com/">Learn more</a>
+            Select from each option in order to get to your destination.
+            
          </p>
+         
          <p>
             To explore different locations, search for a city below or drag the map marker around.
          </p>
+
+      
          <div class="search-container">
             <h2 class="city-label">Select a city</h2>
             <div class="outer-city-field-container">
@@ -139,8 +143,26 @@
                </div>
                <input class="isoline-controls slider" id="range" type="range" min="0" max="4000" value="1200" />
             </div>
+
+            
             <div class="group columns">
-               <div class="col">
+
+                  <div class="col">
+                        <h2>Driver or Passenger?</h2>
+                        <label class="radio-container">
+                           <input class="isoline-controls" type="radio" id="driver" name="position" checked>
+                           <span class="checkmark"></span>
+                           Driver
+                        </label>
+                        <label class="radio-container">
+                           <input class="isoline-controls" type="radio" id="Passenger" name="position">
+                           <span class="checkmark"></span>
+                           Passenger
+                        </label>
+                           
+                  </div>
+               
+               <!-- <div class="col">
                   <h2>Mode</h2>
                   <label class="radio-container">
                      <input class="isoline-controls" type="radio" id="car" name="mode" checked>
@@ -157,7 +179,7 @@
                      <span class="checkmark"></span>
                      Truck
                   </label>
-               </div>
+               </div> -->
                <div class="col">
                   <h2>Range type</h2>
                   <label class="radio-container">
@@ -189,8 +211,18 @@
                </div>
                <input class="isoline-controls slider" id="hour-slider" type="range" min="0" max="23" value="12" />
             </div>
-         </div>
 
+            <div class="group">
+                  <h2>Sign into your Spotify account</h2>
+                  <p>username or email</p>
+                  <input class="isoline-controls text-input" id="info" type="info" name="info" >
+                  <p>password</p>
+                  <input class="isoline-controls text-input" id="info" type="info" name="info" >
+                  <p> </p>
+                 <center><a class="btn btn-primary btn-lg" href="https://www.spotify.com/us/" role="button">sign in</a> </center> 
+            </div>
+
+         </div> 
          <div class="content-group" id="content-group-2">
             <div class="group">
                <h2>Map Theme</h2>
