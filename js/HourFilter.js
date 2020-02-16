@@ -1,6 +1,6 @@
 import {$, toAMPMFormat} from "./helpers.js";
 
-class HourFilter {
+export class HourFilter {
   constructor() {
     this.graph = $(".graph");
     this.slider = $("#hour-slider");

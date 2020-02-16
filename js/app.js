@@ -1,6 +1,7 @@
 import {$, $$, to24HourFormat, formatRangeLabel, toDateInputFormat} from "./helpers.js";
 import {center, hereCredentials} from "./config.js";
 import {isolineMaxRange, requestIsolineShape} from "./here.js";
+import {HourFilter} from "./HourFilter.js";
 import MapRotation from "./MapRotation.js";
 //Height calculations
 const height = $("#content-group-1").clientHeight || $("#content-group-1").offsetHeight;
@@ -137,37 +138,3 @@ async function calculateIsoline() {
 }
 
 calculateIsoline();
-//Tab control for sidebar
-const tabs = $$(".tab");
-tabs.forEach(t => (t.onclick = tabify));
-
-function tabify(evt) {
-  tabs.forEach(t => t.classList.remove("tab-active"));
-  if (evt.target.id === "tab-1") {
-    $(".tab-bar").style.transform = "translateX(0)";
-    evt.target.classList.add("tab-active");
-    $("#content-group-1").style.transform = "translateX(0)";
-    $("#content-group-2").style.transform = "translateX(100%)";
-  } else {
-    $(".tab-bar").style.transform = "translateX(100%)";
-    evt.target.classList.add("tab-active");
-    $("#content-group-1").style.transform = "translateX(-100%)";
-    $("#content-group-2").style.transform = "translateX(0)";
-  }
-}
-
-const rotation = new MapRotation(map);
-
-function calculateView() {
-  const options = {
-    theme: $("#day").checked
-      ? "day"
-      : "night",
-    static: $("#static").checked
-  };
-  if (options.static) {
-    rotation.stop();
-  } else {
-    rotation.start();
-  }
-}

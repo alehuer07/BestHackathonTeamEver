@@ -191,3 +191,10 @@ p {
    display: grid;
    grid-template-columns: 1fr 1fr;
 }
+
+.ctrl-panel {   
+   background-color: #ffffff;
+   border-right: solid #ffffff 1px;
+   border-bottom: solid #ffffff 1px;
+   
+        }
