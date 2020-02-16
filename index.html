@@ -1,338 +1,288 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<head>
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap-grid.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="style.css" />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
+		<title>Music Drive</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://js.api.here.com/v3/3.1/mapsjs-ui.css"
+		/>
+		<script
+			type="text/javascript"
+			src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"
+		></script>
+	</head>
 
-    <title>Music Ride</title>
+	<body>
+		<div
+			id="mapContainer"
+			style="width: 1024px; height: 768px; background: white;"
+		></div>
+		<script>
+			let M = {
+				Init: {
+					// developer.here.com for app_id and app_code
+					apikey: '3_HxWMmIIhvaQYAgcvg7eX3IL8wtQL27utbOe5IBXP0',
+					useHTTPS: true
+				},
+				Behavior: {}, // Manage map behaviors
+				Container: {}, // Reference to DOM object containing map
+				Geo: {}, // Geocoder service
+				Lat: 38.89037, // Latitude
+				Layers: {}, // Map layers
+				Lines: {}, // Lines
+				Lng: -100, // Longitude
+				Map: {}, // Map object
+				Platform: {}, // Core to HERE API
+				Router: {}, // Routing service
+				UI: {}, // User interface and interaction
+				Zoom: 4, // 1 == global, 15 == street level
+				Cities: [
+					// { City: '', Pos: { lat: current_lat, lng: current_long } }
+				]
+			};
+			// Obtain reference to #mapContainer in DOM
+			M.Container = document.getElementById('mapContainer');
 
-    <script>
-        function getUrlVars() {
-            var vars = {};
-            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-                vars[key] = value;
-            });
-            return vars;
-        }
+			// Store initialized platform object
+			M.Platform = new H.service.Platform(M.Init);
 
-        var music = getUrlVars()["m"];
-        if(!music){
-            window.location.href = "routes/music.html";
-        }
-    </script>
-  </head>
-  <body>
-   
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="routes/learnmore.html">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-      </nav>
-      <div class="jumbotron">
-        <h1 class="display-4">Welcome to MusicShare</h1>
-        <p class="lead">Ride with people who like the same music as you!</p>
-        <hr class="my-4">
-        <p>Use our map to match with music lovers going to the same place as you</p>
-        <p>Create a Spotify account first if you do not have one</p>
-        <a class="btn btn-primary btn-lg" href="https://www.spotify.com/us/" role="button">Go to Spotify</a>
-      </div>
+			// Store reference to geocoding service
+			M.Geo = M.Platform.getGeocodingService();
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
-  </body>
-<html>
+			// Store reference to layers object
+			M.Layers = M.Platform.createDefaultLayers();
 
-<head>
-   <title>HERE JS API 3.1</title>
+			// Create map object initialized with container and style
+			// Set map style - example M.Layers.satellite.map
+			M.Map = new H.Map(M.Container, M.Layers.vector.normal.map);
 
-   <!-- Style -->
-   <link rel="stylesheet" type="text/css" href="css/index.css" />
-   <link rel="stylesheet" type="text/css" href="css/sidebar.css" />
-   <link rel="stylesheet" type="text/css" href="css/search.css" />
+			// Create behavior object initialized with map object
+			M.Behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(M.Map));
 
-   <!-- JS API -->
-<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+			// Store UI object associated with map object and layers object
+			M.UI = H.ui.UI.createDefault(M.Map, M.Layers);
 
+			// Store routing service object
+			M.Router = M.Platform.getRoutingService();
 
-   <!-- Turf for area calculations -->
-   <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+			// Store reference for lines object
+			M.Lines = new H.geo.LineString();
 
-   <!-- Social -->
-   <link rel="shortcut icon" href="resources/favicon.ico">
+			// Define function to display map using values stored in xy object
+			function displayMap() {
+				M.Map.setCenter({ lat: M.Lat, lng: M.Lng });
+				M.Map.setZoom(M.Zoom);
+			}
+			displayMap();
 
-   <!-- Date -->
-   <script src="https://unpkg.com/better-dom@4.0.0/dist/better-dom.min.js"></script>
-   <script src="https://unpkg.com/better-dateinput-polyfill@3.2.7/dist/better-dateinput-polyfill.min.js"></script>
-</head>
+			// Obtain routing parameters bases on cities
+			function getRouteParams() {
+				let params = {
+					mode: 'fastest;car',
+					representation: 'display',
+					routeattributes: 'waypoints,summary,shape,legs',
+					maneuverattributes: 'direction,action'
+				};
+				for (var i = M.Cities.length; i--; ) {
+					params[
+						`waypoint${i}`
+					] = `${M.Cities[i].Pos.lat},${M.Cities[i].Pos.lng}`;
+				}
+				return params;
+			}
+			// Add route
+			function addRoute() {
+				M.Router.calculateRoute(
+					getRouteParams(),
+					function(data) {
+						data.response.route[0].shape.forEach(function(element) {
+							M.Lines.pushPoint({
+								lat: element.split(',')[0],
+								lng: element.split(',')[1]
+							});
+						});
+						M.Map.addObject(
+							new H.map.Polyline(M.Lines, { style: { lineWidth: 2 } })
+						);
+					},
+					function(error) {
+						alert(error);
+					}
+				);
+			}
+			let current_lat, current_long;
+			var options = {
+				enableHighAccuracy: true,
+				timeout: 5000,
+				maximumAge: 0
+			};
 
-<body>
-   <div id="map"></div>
-   <div id="sidebar">
-      <div class="gradient-line"></div>
-      <div class="header">
-         <h1>Fill out information</h1>
-         <p>
-            Select from each option in order to get to your destination.
-            
-         </p>
-         
-         <p>
-            To explore different locations, search for a city below or drag the map marker around.
-         </p>
+			function success(pos) {
+				var crd = pos.coords;
+				lat = crd.latitude;
+				long = crd.longitude;
+				console.log('Your current position is:');
+				console.log(`Latitude : ${crd.latitude}`);
+				console.log(`Longitude: ${crd.longitude}`);
+				console.log(`More or less ${crd.accuracy} meters.`);
+			}
 
-      
-         <div class="search-container">
-            <h2 class="city-label">Select a city</h2>
-            <div class="outer-city-field-container">
-               <img src="resources/outline-search-24px.svg">
-               <div class="inner-city-field-container">
-                  <div contenteditable="true" class="city-field"></div>
-                  <div class="city-field-suggestion"></div>
-               </div>
-            </div>
-         </div>
+			function error(err) {
+				console.warn(`ERROR(${err.code}): ${err.message}`);
+			}
 
-      </div>
-      <div class="tabs">
-         <div class="tab-container">
-            <div class="tab tab-active" id="tab-1">
-               Isoline Options
-            </div>
-            <div class="tab" id="tab-2">
-               Display Options
-            </div>
-         </div>
-         <div class="tab-bar"></div>
-      </div>
+			navigator.geolocation.getCurrentPosition(success, error, options);
 
+			// Display marker on map for each city, then add routing
+			function initCities() {
+				let promises = M.Cities.map(place => {
+					let geoParams = {
+						searchText: place.City,
+						jsonattributes: 1
+					};
+					return new Promise((resolve, reject) => {
+						M.Geo.geocode(
+							geoParams,
+							function(result) {
+								let first =
+									result.response.view[0].result[0].location.displayPosition;
+								place.Pos.lat = first.latitude;
+								place.Pos.lng = first.longitude;
+								var mark = new H.map.Marker(place.Pos);
+								M.Map.addObject(mark);
+								resolve(result);
+							},
+							function(err) {
+								console.log(err);
+								return reject(err);
+							}
+						);
+					});
+				});
+				Promise.all(promises).then(x => {
+					addRoute();
+				});
+			}
+			function initCities2() {
+				let promises = M.Cities.map(place => {
+					let geoParams = {
+						searchText: place.City,
+						jsonattributes: 1
+					};
+					return new Promise((resolve, reject) => {
+						M.Geo.geocode(
+							geoParams,
+							function(result) {
+								let first =
+									result.response.view[0].result[0].location.displayPosition;
+								place.Pos.lat = first.latitude;
+								place.Pos.lng = first.longitude;
+								// var mark = new H.map.Marker(place.Pos);
+								M.Map.addObject(mark);
+								resolve(result);
+							},
+							function(err) {
+								console.log(err);
+								return reject(err);
+							}
+						);
+					});
+				});
+				Promise.all(promises).then(x => {
+					addRoute();
+				});
+			}
+			function getRoute() {
+				M.Cities = [];
+				initCities2();
+				var start_city = document.getElementById('start').value;
+				var dest_city = document.getElementById('dest').value;
+				M.Cities.push({ City: start_city, Pos: { lat: 0.0, lng: 0.0 } });
+				M.Cities.push({ City: dest_city, Pos: { lat: 0.0, lng: 0.0 } });
+				console.log(M.Cities[0].Pos);
+				console.log(M.Cities[1].Pos);
+				initCities();
+			}
+		</script>
+		<div class="ctrl-panel">
+			<div class="form-horizontal">
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<input
+							required
+							type="text"
+							id="start"
+							class="form-control "
+							value=""
+							placeholder="From"
+						/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<input
+							type="text"
+							id="dest"
+							class="form-control"
+							size="40"
+							value=""
+							required
+							placeholder="To"
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="form-horizontal">
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<select id="vehicles" class="form-control">
+							<option value="2" selected="true">Car</option>
+							<option value="3">Truck</option>
+							<option value="9">Delivery Truck</option>
+						</select>
+					</div>
+				</div>
+			</div>
 
-      <div class="content">
-         <div class="content-group" id="content-group-1">
-            <div class="group">
-               <div class="h2-row">
-                  <h2>Range</h2>
-                  <div id="slider-val" class="h2-val"></div>
-               </div>
-               <input class="isoline-controls slider" id="range" type="range" min="0" max="4000" value="1200" />
-            </div>
-
-            
-            <div class="group columns">
-
-                  <div class="col">
-                        <h2>Driver or Passenger?</h2>
-                        <label class="radio-container">
-                           <input class="isoline-controls" type="radio" id="driver" name="position" checked>
-                           <span class="checkmark"></span>
-                           Driver
-                        </label>
-                        <label class="radio-container">
-                           <input class="isoline-controls" type="radio" id="Passenger" name="position">
-                           <span class="checkmark"></span>
-                           Passenger
-                        </label>
-                           
-                  </div>
-               
-               <!-- <div class="col">
-                  <h2>Mode</h2>
-                  <label class="radio-container">
-                     <input class="isoline-controls" type="radio" id="car" name="mode" checked>
-                     <span class="checkmark"></span>
-                     Car
-                  </label>
-                  <label class="radio-container">
-                     <input class="isoline-controls" type="radio" id="pedestrian" name="mode">
-                     <span class="checkmark"></span>
-                     Pedestrian
-                  </label>
-                  <label class="radio-container">
-                     <input class="isoline-controls" type="radio" id="truck" name="mode">
-                     <span class="checkmark"></span>
-                     Truck
-                  </label>
-               </div> -->
-               <div class="col">
-                  <h2>Range type</h2>
-                  <label class="radio-container">
-                     <input class="isoline-controls" type="radio" id="time" name="range-type" checked>
-                     <span class="checkmark"></span>
-                     Time
-                  </label>
-                  <label class="radio-container">
-                     <input class="isoline-controls" type="radio" id="distance" name="range-type">
-                     <span class="checkmark"></span>
-                     Distance
-                  </label>
-               </div>
-            </div>
-
-            <div class="group">
-               <h2>Date</h2>
-               <input class="isoline-controls text-input" id="date-value" type="date" name="date" >
-            </div>
-
-            <div class="group">
-               <div class="h2-row">
-                  <h2>Time</h2>
-                  <div id="hour-slider-val" class="h2-val"></div>
-               </div>
-               <div class="graph-container">
-                  <div class="no-graph-text">Distribution is only available in range type time and mode car.</div>
-                  <div class="graph"></div>
-               </div>
-               <input class="isoline-controls slider" id="hour-slider" type="range" min="0" max="23" value="12" />
-            </div>
-
-            <!-- <div class="group">
-                  <h2>Sign into your Spotify account</h2>
-                  <p>username or email</p>
-                  <input class="isoline-controls text-input" id="info" type="info" name="info" >
-                  <p>password</p>
-                  <input class="isoline-controls text-input" id="info" type="info" name="info" >
-                  <p> </p>
-                 <center><a class="btn btn-primary btn-lg" href="https://www.spotify.com/us/" role="button">sign in</a> </center> 
-            </div> -->
-            <div class="ctrl-panel">
-                  <div class="form-horizontal">
-                          <div class="form-group row">
-                              <div class="col-sm-12">
-                                  <input required  type='text' id='start' class='form-control ' value='' placeholder="From"
-                                      onkeydown="if (event.keyCode == 13)startRouteCalculation();">
-                              </div>
-                          </div>
-                          <div class="form-group row">
-                              <div class="col-sm-12">
-                                  <input type='text' id='dest' class='form-control' size='40' value='' required placeholder="To"
-                                      onkeydown="if (event.keyCode == 13)startRouteCalculation();" />
-                              </div>
-                          </div>
-                          <div class="form-group" style="display: none;">
-                              <div class="checkbox">
-                                  <label><input type="checkbox" id="chkEnableDTFiltering" name="chkEnableDTFiltering"
-                                          onclick="handleDateTimeFilteringClicked()">Enable datetime filtering</label>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="form-horizontal">
-                              <div class="form-group row">
-                                  <div class="col-sm-12">
-                                          <select id="vehicles" class="form-control" 
-                                      onkeydown="if (event.keyCode == 13)startRouteCalculation();" required onchange="
-                                  (true)">
-                                      <option value="2" selected="true">Car</option>
-                                      <option value="3">Truck</option>
-                                      <option value="9">Delivery Truck</option>
-          
-                                  </select>
-                                  </div>
-                                  <div class="col-smsdsds-6">
-                                          <input type='hidden' id='nrOfTotalTires' class="form-control" required  value='4'
-                                          onkeydown="if (event.keyCode == 13)startRouteCalculation();"
-                                          onchange="setUserdefinedVehicleSpec(true)" />
-                                  </div>
-                              </div>
-                          </div>
-          
-                      <div class="form-horizontal">
-                          <div class="form-group row">
-                              <div class="col-sm-12">
-          
-                                      <select id="currency" class="form-control" 
-                                      onkeydown="if (event.keyCode == 13)startRouteCalculation();" required onchange="
-                                  (true)">
-                                  <option value="USD" selected="true">USD</option>
-                                  <option value="INR">INR</option>
-                                  <option value="EUR">EUR</option>
-                                  <option value="CNY">CNY</option>
-                              </select>
-                              </div>
-                          </div>
-                      </div>
-           
-               <div class="form-horizontal">
-                   <div class="form-group" style="text-align: center">
-                       <div class="col-sm-9">
-                           <input type="submit" id="routeButton2" class="btn btn-primary" value="submit" />
-                       </div>
-                   </div>
-               </div>
-           </div>
-
-         </div> 
-         <div class="content-group" id="content-group-2">
-            <div class="group">
-               <h2>Map Theme</h2>
-               <div class="theme-tiles">
-                  <div id="day" class="theme-tile theme-tile-active">
-                     <img src="./resources/day-theme.png">
-                  </div>
-                  <div id="night" class="theme-tile">
-                     <img src="./resources/night-theme.png">
-                  </div>
-               </div>
-            </div>
-
-            <div class="group">
-               <h2>Map View</h2>
-               <label class="radio-container">
-                  <input class="view-controls" type="radio" id="static" name="map-view" checked>
-                  <span class="checkmark"></span>
-                  Static top-down
-               </label>
-               <label class="radio-container">
-                  <input class="view-controls" type="radio" id="rotating" name="map-view">
-                  <span class="checkmark"></span>
-                  Rotating angle
-               </label>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <script type="module" src="js/app.js"></script>
-   <div id="mapContainer" class=""></div>
-<!-- HERE Javascript -->    
-    <!-- <script src="js/mainHome.js" type="text/javascript"></script> -->
-</body>
-</html>
-</body>
-
+			<div class="form-horizontal">
+				<div class="form-group" style="text-align: center">
+					<div class="col-sm-9">
+						<input
+							type="submit"
+							id="routeButton2"
+							class="btn btn-primary"
+							value="submit"
+							onclick="getRoute()"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
