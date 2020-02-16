@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+
+		<script>
+			function getUrlVars() {
+				var vars = {};
+				var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+					vars[key] = value;
+				});
+				return vars;
+			}
+	
+			var music = getUrlVars()["m"];
+			if(!music){
+				window.location.href = "routes/music.html";
+			}
+		</script>
+
 		<!-- Bootstrap CSS -->
 		<link
 			rel="stylesheet"
@@ -239,6 +255,10 @@
 				console.log(M.Cities[1].Pos);
 				initCities2();
 				console.log(M.Cities)
+				
+				setTimeout(function(){
+					list(M.Cities[0].Pos.lat+"/"+M.Cities[0].Pos.lng, M.Cities[1].Pos.lat+"/"+M.Cities[1].Pos.lng)
+				}, 500);
 			}
 
 		</script>
@@ -305,5 +325,73 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+
+			var userID = "";
+	  
+			function checkin(){
+			  var xhttp = new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				  userID = JSON.parse(this.responseText).UserID;
+				  console.log(userID);
+				}
+			  };
+			  xhttp.open("GET", "http://localhost:18080/checkin/", true);
+			  xhttp.send();      
+			}
+			checkin();
+	  
+
+	  
+			function list(start, end){
+
+				console.log(userID)
+			  var xhttp = new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				  console.log(this.responseText);
+				  setInterval(function(){
+					  checkMatch();
+				  }, 1000)
+				}
+			  };
+			  xhttp.open("GET", "http://localhost:18080/list?riderID="+userID+"&start="+start+"&end="+end+"&music="+music, true);
+			  xhttp.send();      
+			}
+	  
+			function delist(){
+			  var xhttp = new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				  console.log(this.responseText);
+				}
+			  };
+			  xhttp.open("GET", "http://localhost:18080/delist?riderID="+userID, true);
+			  xhttp.send();   
+			}
+	  
+			function checkMatch(){
+			  var xhttp = new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				  var data = JSON.parse(this.responseText);
+				  if(data.match){
+					  for(const point of data.points){
+						M.Cities.push({Pos: { lat: point[0], lng: point[1] } });
+					  }
+					  initCities();
+				  }
+				}
+			  };
+			  xhttp.open("GET", "http://localhost:18080/check?riderID="+userID, true);
+			  xhttp.send();   
+			}
+	  
+		  </script>
 	</body>
+
+
+
+
 </html>
