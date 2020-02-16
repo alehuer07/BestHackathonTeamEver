@@ -75,7 +75,8 @@ app.get('/check', function(req, res){
     let info = {};
     if(!req.query.riderID) { error(res, "riderID is missing"); return; }
 
-    riderID = req.query.riderID;
+    let riderID = req.query.riderID;
+    if(!RIDEDB.DB.queue[riderID]){ error(res, "ride is not yet requested"); return; }
     let match = RIDEDB.DB.match(riderID);
 
     if(!match){
@@ -87,6 +88,7 @@ app.get('/check', function(req, res){
         info.status = "ok";
         info.match = match;
         info.points = [RIDEDB.DB.queue[match].start,RIDEDB.DB.queue[riderID].start,RIDEDB.DB.queue[riderID].end,RIDEDB.DB.queue[match].end];
+        info.matchMusic = RIDEDB.DB.queue[match].matchMusic;
         res.send(info);
         return;
     }
