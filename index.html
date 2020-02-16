@@ -329,6 +329,7 @@
 		<script type="text/javascript">
 
 			var userID = "";
+			var userInterval;
 	  
 			function checkin(){
 			  var xhttp = new XMLHttpRequest();
@@ -349,10 +350,14 @@
 			  var xhttp = new XMLHttpRequest();
 			  xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-				  console.log(this.responseText);
-				  setInterval(function(){
-					  checkMatch();
-				  }, 1000)
+				    console.log(this.responseText);
+				    userInterval = setInterval(function(){
+					    checkMatch();
+				    }, 1000);
+				    $("#earchstatus").html("searching for your ride...");
+				    $("#routeButton").html("Cancel Ride");
+                    $("#routeButton").removeClass("btn-primary");
+                    $("#routeButton").addClass("btn-danger");
 				}
 			  };
 			  xhttp.open("GET", "http://localhost:18080/list?riderID="+userID+"&start="+start+"&end="+end+"&music="+music, true);
@@ -363,7 +368,13 @@
 			  var xhttp = new XMLHttpRequest();
 			  xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-				  console.log(this.responseText);
+				    console.log(this.responseText);
+                    clearInterval(userInterval);
+
+                    $("#earchstatus").html("");
+                    $("#routeButton").html("Search Ride");
+                    $("#routeButton").removeClass("btn-danger");
+                    $("#routeButton").addClass("btn-primary");                    
 				}
 			  };
 			  xhttp.open("GET", "http://localhost:18080/delist?riderID="+userID, true);
@@ -376,8 +387,9 @@
 				if (this.readyState == 4 && this.status == 200) {
 				  var data = JSON.parse(this.responseText);
 				  if(data.match){
+                      clearInterval(userInterval);
 					  for(const point of data.points){
-						M.Cities.push({City: point[2] });
+						M.Cities.push({City: point[2], Pos: { lat: 0.0, lng: 0.0 } });
 					  }
 					  initCities();
 				  }
