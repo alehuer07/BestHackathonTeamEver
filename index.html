@@ -189,6 +189,8 @@
 					addRoute();
 				});
 			}
+
+			//Does not place markers or route
 			function initCities2() {
 				let promises = M.Cities.map(place => {
 					let geoParams = {
@@ -204,7 +206,7 @@
 								place.Pos.lat = first.latitude;
 								place.Pos.lng = first.longitude;
 								// var mark = new H.map.Marker(place.Pos);
-								M.Map.addObject(mark);
+								// M.Map.addObject(mark);
 								resolve(result);
 							},
 							function(err) {
@@ -214,13 +216,9 @@
 						);
 					});
 				});
-				Promise.all(promises).then(x => {
-					addRoute();
-				});
 			}
 			function getRoute() {
 				M.Cities = [];
-				initCities2();
 				var start_city = document.getElementById('start').value;
 				var dest_city = document.getElementById('dest').value;
 				M.Cities.push({ City: start_city, Pos: { lat: 0.0, lng: 0.0 } });
@@ -228,7 +226,21 @@
 				console.log(M.Cities[0].Pos);
 				console.log(M.Cities[1].Pos);
 				initCities();
+				console.log(M.Cities)
 			}
+
+			function getRoute2() {
+				M.Cities = [];
+				var start_city = document.getElementById('start').value;
+				var dest_city = document.getElementById('dest').value;
+				M.Cities.push({ City: start_city, Pos: { lat: 0.0, lng: 0.0 } });
+				M.Cities.push({ City: dest_city, Pos: { lat: 0.0, lng: 0.0 } });
+				console.log(M.Cities[0].Pos);
+				console.log(M.Cities[1].Pos);
+				initCities2();
+				console.log(M.Cities)
+			}
+
 		</script>
 		<div class="ctrl-panel">
 			<div class="form-horizontal">
@@ -277,8 +289,17 @@
 							type="submit"
 							id="routeButton2"
 							class="btn btn-primary"
-							value="submit"
+							value="submitRoute"
 							onclick="getRoute()"
+						/>
+					</div>
+					<div class="col-sm-9">
+						<input
+							type="submit"
+							id="routeButton2"
+							class="btn btn-primary"
+							value="submitLocationNoRoute"
+							onclick="getRoute2()"
 						/>
 					</div>
 				</div>

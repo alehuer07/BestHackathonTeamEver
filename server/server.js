@@ -61,10 +61,10 @@ app.get('/status', function(req, res){
     res.send(info);
 });
 
-app.get('/checkin', function(req, res){g
+app.get('/checkin', function(req, res){
     let info = {};
     info.UserID = USER.HELPERS.GenerateID();
-    res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5500');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
