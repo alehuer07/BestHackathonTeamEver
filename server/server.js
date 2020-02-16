@@ -52,7 +52,6 @@ app.get('/client.js', function(req, res){
 app.get('/api/uptime', function(req, res){
     let info = {};
     info.serverUpTime = serverUpTime;
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
     res.send(info);
 });
 
@@ -83,6 +82,10 @@ app.get('/list', function(req, res){
     RIDEDB.DB.ListRide(ride);
 
     info.status = "ok";
+    res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(info);
 });
 
@@ -93,6 +96,10 @@ app.get('/delist', function(req, res){
     RIDEDB.DB.DeListRide(req.query.riderID);
 
     info.status = "ok";
+    res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(info);
 });
 
@@ -107,6 +114,10 @@ app.get('/check', function(req, res){
     if(!match){
         info.status = "ok";
         info.eta = "unknown";
+        res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
         res.send(info);
         return;
     } else {
@@ -114,6 +125,10 @@ app.get('/check', function(req, res){
         info.match = match;
         info.points = [RIDEDB.DB.queue[match].start,RIDEDB.DB.queue[riderID].start,RIDEDB.DB.queue[riderID].end,RIDEDB.DB.queue[match].end];
         info.matchMusic = RIDEDB.DB.queue[match].matchMusic;
+        res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
         res.send(info);
         return;
     }
@@ -143,6 +158,10 @@ function error(res, msg){
     let info = {};
     info.status = "error";
     info.error = msg;
+    res.setHeader('Access-Control-Allow-Origin', 'localhost:5500');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(info);
     return;
 }
