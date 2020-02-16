@@ -257,7 +257,8 @@
 				console.log(M.Cities)
 				
 				setTimeout(function(){
-					list(M.Cities[0].Pos.lat+"/"+M.Cities[0].Pos.lng, M.Cities[1].Pos.lat+"/"+M.Cities[1].Pos.lng)
+					list(M.Cities[0].Pos.lat+"/"+M.Cities[0].Pos.lng+"/"+M.Cities[0].City,
+                        M.Cities[1].Pos.lat+"/"+M.Cities[1].Pos.lng+"/"+M.Cities[1].City)
 				}, 500);
 			}
 
@@ -345,8 +346,6 @@
 
 	  
 			function list(start, end){
-
-				console.log(userID)
 			  var xhttp = new XMLHttpRequest();
 			  xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
@@ -378,7 +377,7 @@
 				  var data = JSON.parse(this.responseText);
 				  if(data.match){
 					  for(const point of data.points){
-						M.Cities.push({Pos: { lat: point[0], lng: point[1] } });
+						M.Cities.push({City: point[2] });
 					  }
 					  initCities();
 				  }
